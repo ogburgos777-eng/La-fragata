@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#090909">
+<meta name="description" content="Almirante Brown — La Fragata. Fixture, resultados y tabla.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<title>Almirante Brown — La Fragata</title>
+<style>
+:root{--y:#f5c400;--y2:#ffd83d;--b:#090909;--card:#151515;--line:#2c2c2c;--txt:#fff;--muted:#b9b9b9;--green:#47c76a;--red:#ff6262}
+*{box-sizing:border-box}html{background:#090909}body{margin:0;background:radial-gradient(circle at 50% -10%,#3a3200 0,#090909 42%);color:var(--txt);font-family:Inter,Arial,sans-serif;min-height:100vh}
+header{padding:24px 16px 18px;text-align:center;border-bottom:1px solid #3c3400;background:linear-gradient(180deg,#111 0,#090909 100%)}
+.crest{width:82px;height:94px;margin:auto;border:4px solid var(--y);border-radius:15px 15px 27px 27px;display:flex;align-items:center;justify-content:center;background:repeating-linear-gradient(90deg,#080808 0 16px,var(--y) 16px 32px);box-shadow:0 0 30px #f5c40022;font-weight:900;color:#111;text-shadow:0 1px #fff}
+.crest span{background:#090909;color:var(--y);padding:5px 7px;border-radius:7px;font-size:20px}
+h1{margin:12px 0 2px;font-size:27px;letter-spacing:2px}.tag{color:var(--y);font-weight:900;letter-spacing:3px;font-size:12px}
+nav{display:flex;gap:8px;padding:10px;position:sticky;top:0;z-index:10;background:#090909eF;backdrop-filter:blur(10px)}
+nav button,.refresh{flex:1;border:1px solid #3c3400;background:#171717;color:#ddd;border-radius:12px;padding:12px;font-weight:900}
+nav button.active{background:var(--y);color:#111}
+main{max-width:760px;margin:auto;padding:12px}.screen.hidden{display:none}.card{background:linear-gradient(180deg,#191919,#121212);border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:12px;box-shadow:0 8px 30px #0008}
+.hero{display:flex;justify-content:space-between;gap:12px;align-items:center}.eyebrow{color:var(--y);font-size:11px;font-weight:900;letter-spacing:1.5px}.big{font-size:22px;font-weight:900;margin-top:5px}.muted{color:var(--muted);font-size:12px;margin-top:5px}
+.next{border:1px solid var(--y);background:linear-gradient(135deg,#211f0b,#121212)}.score{font-size:22px;font-weight:900;color:var(--y);white-space:nowrap}
+.match{display:grid;grid-template-columns:70px 1fr auto;gap:12px;align-items:center;padding:13px 0;border-bottom:1px solid var(--line)}.match:last-child{border:0}
+.date{text-align:center;font-weight:900;color:var(--y);font-size:13px}.date small{display:block;color:var(--muted);margin-top:3px;font-weight:700}
+.op{font-weight:900}.meta{color:var(--muted);font-size:11px;margin-top:4px}.right{text-align:right}.time{font-weight:900}.venue{color:var(--muted);font-size:11px;margin-top:3px}.win{color:var(--green)}.draw{color:#f2c94c}.loss{color:var(--red)}
+table{width:100%;border-collapse:collapse;min-width:590px}th{background:var(--y);color:#111;padding:9px;font-size:11px}td{padding:9px;border-bottom:1px solid var(--line);text-align:center;font-size:12px}td:nth-child(2){text-align:left;font-weight:800}.boca{background:#f5c40018;outline:1px solid #f5c400}.pos{font-weight:900;color:var(--y)}
+.tablewrap{overflow:auto}.delta{font-size:11px;font-weight:900}.up{color:var(--green)}.down{color:var(--red)}
+button{cursor:pointer}.refresh{flex:none;background:var(--y);color:#111;border-color:var(--y);padding:10px 13px}.install{display:none;background:var(--y);color:#111;border:0;border-radius:12px;padding:12px;width:100%;font-weight:900;margin-bottom:12px}
+footer{text-align:center;color:#777;font-size:11px;padding:15px}.quote{font-size:14px;font-weight:900;color:var(--y);letter-spacing:1px}
+@media(max-width:520px){.match{grid-template-columns:58px 1fr auto}.big{font-size:19px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="crest"><span>AB</span></div>
+  <h1>ALMIRANTE BROWN</h1>
+  <div class="tag">LA FRAGATA</div>
+</header>
+<nav>
+  <button class="active" onclick="tab('partidos',this)">⚽ PARTIDOS</button>
+  <button onclick="tab('tabla',this)">📊 TABLA</button>
+</nav>
+<main>
+<button id="install" class="install">📲 Instalar La Fragata</button>
+
+<section id="partidos" class="screen">
+  <div class="card next">
+    <div class="eyebrow">PRÓXIMO PARTIDO</div>
+    <div class="hero">
+      <div><div class="big">Central Norte vs. Almirante Brown</div><div class="muted">Primera Nacional · Fecha 28</div></div>
+      <div class="score">17:00</div>
+    </div>
+    <div class="muted">05/09/2026 · Visitante</div>
+  </div>
+
+  <div class="card">
+    <div class="hero"><h2 style="margin:0">Próximos partidos</h2><button class="refresh" onclick="actualizar()">↻ Actualizar</button></div>
+    <div id="upcoming"></div>
+  </div>
+
+  <div class="card">
+    <h2 style="margin-top:0">Últimos resultados</h2>
+    <div id="recent"></div>
+  </div>
+</section>
+
+<section id="tabla" class="screen hidden">
+  <div class="card">
+    <div class="hero"><h2 style="margin:0">Primera Nacional · Zona A</h2><span class="eyebrow">FECHA 27</span></div>
+    <div class="tablewrap"><table>
+      <thead><tr><th>POS</th><th>EQUIPO</th><th>PTS</th><th>PJ</th><th>DG</th><th>Dif. vs AB</th></tr></thead>
+      <tbody id="standings"></tbody>
+    </table></div>
+    <p class="muted">Almirante Brown aparece resaltado. “Dif. vs AB” indica cuántos puntos separan a cada rival de La Fragata.</p>
+  </div>
+</section>
+<footer><div class="quote">LA FRAGATA NUNCA SE HUNDE</div><div id="updated">Datos cargados: 30/08/2026</div></footer>
+</main>
+<script>
+const upcoming=[
+["05/09","Central Norte","Primera Nacional · Fecha 28","17:00","Visitante"],
+["12/09","Ferro Carril Oeste","Primera Nacional · Fecha 29","17:00","Local"],
+["19/09","Chaco For Ever","Primera Nacional · Fecha 30","17:00","Visitante"],
+["26/09","Acassuso","Primera Nacional · Fecha 31","17:00","Local"],
+["03/10","San Telmo","Primera Nacional · Fecha 32","17:00","Visitante"],
+["10/10","San Miguel","Primera Nacional · Fecha 33","17:00","Local"],
+["17/10","Colón","Primera Nacional · Fecha 34","17:00","Visitante"],
+["24/10","Deportivo Morón","Primera Nacional · Fecha 35","17:00","Local"],
+["31/10","Godoy Cruz","Primera Nacional · Fecha 36","17:00","Visitante"]
+];
+const recent=[
+["30/08","Almirante Brown","Deportivo Madryn","1 - 0","Primera Nacional · Fecha 27","win"],
+["23/08","Racing (Córdoba)","Almirante Brown","0 - 0","Primera Nacional · Fecha 26","draw"],
+["16/08","Almirante Brown","Los Andes","2 - 1","Primera Nacional · Fecha 25","win"],
+["09/08","Estudiantes (BA)","Almirante Brown","1 - 0","Primera Nacional · Fecha 24","loss"]
+];
+const table=[
+["1","Ferro Carril Oeste",52,27,16],["2","Deportivo Morón",47,27,10],["3","Colón",45,26,8],
+["4","Almirante Brown",44,27,7],["5","Deportivo Madryn",43,27,9],["6","Godoy Cruz",40,26,6],
+["7","Estudiantes (BA)",38,27,4],["8","Ciudad de Bolívar",38,27,2],["9","Los Andes",33,25,0],
+["10","Racing (Córdoba)",32,26,1],["11","Mitre (SdE)",32,27,-1],["12","San Miguel",30,27,-2],
+["13","Chaco For Ever",29,27,-3],["14","All Boys",28,27,-4],["15","Central Norte",28,27,-5],
+["16","San Telmo",27,26,-4],["17","Defensores de Belgrano",26,26,-5],["18","Acassuso",22,26,-9]
+];
+function render(){
+document.getElementById("upcoming").innerHTML=upcoming.map(x=>`<div class="match"><div class="date">${x[0]}<small>${x[4]}</small></div><div><div class="op">${x[1]}</div><div class="meta">${x[2]}</div></div><div class="right"><div class="time">${x[3]}</div><div class="venue">${x[4]}</div></div></div>`).join("");
+document.getElementById("recent").innerHTML=recent.map(x=>`<div class="match"><div class="date">${x[0]}</div><div><div class="op">${x[1]} ${x[3]} ${x[2]}</div><div class="meta">${x[4]}</div></div><div class="result ${x[5]}">${x[3]}</div></div>`).join("");
+const ab=44;
+document.getElementById("standings").innerHTML=table.map(r=>{let diff=r[2]-ab;let txt=diff===0?"—":(diff>0?`+${diff}`:`${diff}`);return `<tr class="${r[1]==='Almirante Brown'?'boca':''}"><td class="pos">${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td><td>${r[4]}</td><td class="delta ${diff>0?'down':diff<0?'up':''}">${txt}</td></tr>`}).join("");
+}
+function tab(id,b){document.querySelectorAll(".screen").forEach(s=>s.classList.add("hidden"));document.getElementById(id).classList.remove("hidden");document.querySelectorAll("nav button").forEach(x=>x.classList.remove("active"));b.classList.add("active")}
+function actualizar(){document.getElementById("updated").textContent="Última revisión: "+new Date().toLocaleString("es-AR");}
+render();
+
+let deferredPrompt;
+window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredPrompt=e;document.getElementById("install").style.display="block";});
+document.getElementById("install").onclick=async()=>{if(deferredPrompt){deferredPrompt.prompt();deferredPrompt=null;}};
+if("serviceWorker" in navigator) window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js"));
+</script>
+</body></html>
